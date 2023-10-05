@@ -4,6 +4,7 @@
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
+const config = require('./config/config');
 const LocalStrategy = require('passport-local').Strategy;
 
 /*
@@ -16,7 +17,7 @@ const User = require("./models/User");
 */
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
-mongoose.connect(myMongoUrl);
+mongoose.connect(config.mongodbUrl);
 const db = mongoose.connection;
 
 const app = express();
@@ -27,8 +28,8 @@ const app = express();
 */
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
-    secret: 'my-secret',
-    store: MongoStore.create({ mongoUrl: myMongoUrl })
+    secret: config.jwtSecret,
+    store: MongoStore.create({ mongoUrl: config.mongodbUrl })
   }));
 
 /*
